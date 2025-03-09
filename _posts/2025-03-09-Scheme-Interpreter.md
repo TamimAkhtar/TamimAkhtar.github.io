@@ -55,6 +55,16 @@ tags: [Scheme Interpreter/Evaluator]
   <li>Call <code>Apply-1</code> to handle the procedure invocation.</li>
 </ol>
 
+<h2>The “read-eval-print loop” (REPL):</h2>
+
+```scheme
+(define (scheme-1)
+  (display "Scheme-1: ")
+  (flush)
+  (print (eval-1 (read)))
+  (scheme-1))
+```
+
 <h2>Some Trivial Helper Procedures</h2>
 
 <p>These procedures help us identify the types of expressions we defined earlier.</p>
@@ -72,5 +82,31 @@ tags: [Scheme Interpreter/Evaluator]
 (define define-exp? (exp-checker 'define))
 ```
 
+<h2>Evaluating an Expression:</h2>
 
+<p><li>EVAL-1</li> takes an expression and returns its value. Scheme expressions have sub-expressions which can have sub-expressions, so it is not surprising to see tree recursion involved in <i>EVAL-1</i> to deal with hierarchies, while recursively evaluating all the subexpressions as well. </p>
+
+<ul>
+  <li>The read procedure turns the expression “foo to (quote foo). The value of (quote foo) is foo – the second element of the expression.</li>
+  <li>To evaluate the expression (IF A B C), we first evaluate A; then if A is true, we evaluate B; if A is false, we evaluate C.</li>
+  <li>The value of the lambda expression is the expression itself and there is no work to do until we call the actual procedure. </li>
+  <li>To evaluate a procedure call, we recursively evaluate all the subexpressions. </li>
+</ul>
+
+```scheme
+(define (eval-1 exp)
+  (cond ((constant? exp) exp) 
+	((symbol? exp) (eval exp))	; use STK's EVAL
+	((quote-exp? exp) (cadr exp))
+	((if-exp? exp)
+	 (if (eval-1 (cadr exp))
+	     (eval-1 (caddr exp))
+	     (eval-1 (cadddr exp))))
+	((lambda-exp? exp) exp)
+	((define-exp? exp)
+	 (eval (list 'define (cadr exp) (maybe-quote (eval-1 (caddr exp))))))
+	((pair? exp) (apply-1 (eval-1 (car exp))      ; procedure call
+			         (map eval-1 (cdr exp))))         ; turning actual argument expressions into argument values by tree recursion
+	(else (error "bad expr: " exp))))
+```
 

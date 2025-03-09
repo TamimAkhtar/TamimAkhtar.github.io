@@ -31,7 +31,7 @@ tags: [Scheme Interpreter/Evaluator]
 <h3>2. Symbols (Variables)</h3>
 
 <ul>
-  <li>In the substitution model, local variables are not evaluated directly because we will substitute the actual argument values in the procedure body before evaluating the procedure itself. So by the time we evaluate the procedure itself, all variables hsould have been replaced by argument values </li>
+  <li>In the substitution model, local variables are not evaluated directly because we will substitute the actual argument values in the procedure body before evaluating the procedure itself. So by the time we evaluate the procedure itself, all variables hsould have been replaced by argument values. </li>
   <li>Therefore, the only variable names left are primitive Scheme functions, which we evaluate using STK’s built-in <code>eval</code>.</li>
   <li>This allows us to use global primitive functions without maintaining a symbol table or a full environment system.</li>
 </ul>
@@ -54,3 +54,23 @@ tags: [Scheme Interpreter/Evaluator]
   <li>Recursively evaluate all subexpressions using <code>Eval-1</code>.</li>
   <li>Call <code>Apply-1</code> to handle the procedure invocation.</li>
 </ol>
+
+<h2>Some Trivial Helper Procedures</h2>
+
+<p>These procedures help us identify the types of expressions we defined earlier.</p>
+
+```scheme
+(define (constant? exp)
+  (or (number? exp) (boolean? exp) (string? exp) (procedure? exp)))
+
+(define (exp-checker type)
+  (lambda (exp) (and (pair? exp) (eq? (car exp) type))))
+
+(define quote-exp? (exp-checker 'quote))
+(define if-exp? (exp-checker 'if))
+(define lambda-exp? (exp-checker 'lambda))
+(define define-exp? (exp-checker 'define))
+```
+
+
+

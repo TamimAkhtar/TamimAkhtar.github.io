@@ -84,7 +84,7 @@ tags: [Scheme Interpreter/Evaluator]
 
 <h2>Evaluating an Expression:</h2>
 
-<p><li>EVAL-1</li> takes an expression and returns its value. Scheme expressions have sub-expressions which can have sub-expressions, so it is not surprising to see tree recursion involved in <i>EVAL-1</i> to deal with hierarchies, while recursively evaluating all the subexpressions as well. </p>
+<p><i>EVAL-1</i> takes an expression and returns its value. Scheme expressions have sub-expressions which can have sub-expressions, so it is not surprising to see tree recursion involved in <i>EVAL-1</i> to deal with hierarchies, while recursively evaluating all the subexpressions as well. </p>
 
 <ul>
   <li>The read procedure turns the expression “foo to (quote foo). The value of (quote foo) is foo – the second element of the expression.</li>

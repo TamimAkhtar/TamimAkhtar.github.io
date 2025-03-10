@@ -140,11 +140,42 @@ tags: [Scheme Interpreter/Evaluator]
 
 ```scheme
 ((lambda (x y)
-	((lambda (x) (+ x y))
-	  (* x y)))
-	5 8)
+   ((lambda (x) (+ x y))
+    (* x y)))
+ 5 8)
 ```
 
 <p>The body of the procedure we're calling is <code>((lambda (x) (+ x y))(* x y))</code> and we want to substitute 5 for X and 8 for Y, but the result should be <code> ((lambda (x) (+ x 8))(* 5 8))</code> and not  <code>((lambda (5) (+ 5 8))(* 5 8)).</code></p>
 
+<p>To make this work, in its recursive calls, <i>substitute</i> keeps a list of bound variables in the current subexpression -- ones that shouldn't be substituted for in its argument <i>bound</i>.  This argument is the empty list in the top-level call to <i>substitute</i> from <i>apply-1</i>. So we call <i>substitute</i> on each element of the procedure body and if we encounter a variable that isn’t a bound variable, we replace the argument with that variable.
 
+<p>To deal with nested lambda expressions, the procedure returns the inner lambda expression with the unbound variables substituted. The inner lambda expression is returned with its argument and needs to go through eval-1 procedure which will again recursively call the substitute procedure on the lambda expression.</p>
+
+<p><i>Maybe-quote</i> ensures that non-self-evaluating values stay quoted. For example, consider the expression <code>((lambda (x) (first x)) 'foo)</code>. The actual argument value is <code>foo</code>, but we want the result of the substitution to be <code>(first 'foo)</code> and not (first foo).</p>
+
+```scheme
+(define (substitute exp params args bound)
+  (cond ((constant? exp) exp)
+	((symbol? exp)
+	 (if (memq exp bound)
+	     exp
+	     (lookup exp params args)))
+	((quote-exp? exp) exp)
+	((lambda-exp? exp)
+	 (list 'lambda
+	       (cadr exp)
+	       (substitute (caddr exp) params args (append bound (cadr exp)))))
+	(else (map (lambda (subexp) (substitute subexp params args bound))
+		   exp))))
+
+(define (lookup name params args)
+  (cond ((null? params) name)
+	((eq? name (car params)) (maybe-quote (car args)))
+	(else (lookup name (cdr params) (cdr args)))))
+
+(define (maybe-quote value)
+  (cond ((lambda-exp? value) value)
+	((constant? value) value)
+	((procedure? value) value)	; real Scheme primitive procedure
+	(else (list 'quote value))))
+```

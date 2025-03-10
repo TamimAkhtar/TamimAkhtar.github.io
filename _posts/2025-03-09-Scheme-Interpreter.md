@@ -136,16 +136,15 @@ tags: [Scheme Interpreter/Evaluator]
 
 <p>The <i>substitute</i> procedure takes an expression (body of the procedure), formal parameters, argument values and bound variables as input and returns the procedure body with all argument variables substituted in place of the formal parameters. </p>
 
-<ul>
-  <li><p><i>Substitute</i> substitutes actual arguments for free references to the corresponding formal parameters. For example, given the expression:</p>
+<p><i>Substitute</i> replaces actual arguments for free references to the corresponding formal parameters. For example, given the expression:</p>
 
-  ```scheme
-  ((lambda (x y)
-	   ((lambda (x) (+ x y))
-	    (* x y)))
-	 5 8)
-  ```
-  
-  <p>the body of the procedure we're calling is <code>((lambda (x) (+ x y))(* x y))</code> and we want to substitute 5 for X and 8 for Y, but the result should be <code> ((lambda (x) (+ x 8))(* 5 8))</code> and not  <code>((lambda (5) (+ 5 8))(* 5 8)).</code></p></li>
+```scheme
+((lambda (x y)
+	((lambda (x) (+ x y))
+	  (* x y)))
+	5 8)
+```
+
+<p>The body of the procedure we're calling is <code>((lambda (x) (+ x y))(* x y))</code> and we want to substitute 5 for X and 8 for Y, but the result should be <code> ((lambda (x) (+ x 8))(* 5 8))</code> and not  <code>((lambda (5) (+ 5 8))(* 5 8)).</code></p>
 
 

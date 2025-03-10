@@ -151,7 +151,7 @@ tags: [Scheme Interpreter/Evaluator]
 
 <p>To deal with nested lambda expressions, the procedure returns the inner lambda expression with the unbound variables substituted. The inner lambda expression is returned with its argument and needs to go through eval-1 procedure which will again recursively call the substitute procedure on the lambda expression.</p>
 
-<p><i>Maybe-quote</i> ensures that non-self-evaluating values stay quoted. For example, consider the expression <code>((lambda (x) (first x)) 'foo)</code>. The actual argument value is <code>foo</code>, but we want the result of the substitution to be <code>(first 'foo)</code> and not (first foo).</p>
+<p><i>Maybe-quote</i> ensures that non-self-evaluating values stay quoted. For example, consider the expression <code>((lambda (x) (first x)) 'foo)</code>. The actual argument value is <code>foo</code>, but we want the result of the substitution to be <code>(first 'foo)</code> and not <code>(first foo)</code>.</p>
 
 ```scheme
 (define (substitute exp params args bound)

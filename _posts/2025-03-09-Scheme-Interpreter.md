@@ -156,26 +156,16 @@ tags: [Scheme Interpreter/Evaluator]
 ```scheme
 (define (substitute exp params args bound)
   (cond ((constant? exp) exp)
-	((symbol? exp)
-	 (if (memq exp bound)
-	     exp
-	     (lookup exp params args)))
-	((quote-exp? exp) exp)
-	((lambda-exp? exp)
-	 (list 'lambda
-	       (cadr exp)
-	       (substitute (caddr exp) params args (append bound (cadr exp)))))
-	(else (map (lambda (subexp) (substitute subexp params args bound))
-		   exp))))
-
-(define (lookup name params args)
-  (cond ((null? params) name)
-	((eq? name (car params)) (maybe-quote (car args)))
-	(else (lookup name (cdr params) (cdr args)))))
-
-(define (maybe-quote value)
-  (cond ((lambda-exp? value) value)
-	((constant? value) value)
-	((procedure? value) value)	; Stk procedure
-	(else (list 'quote value))))
+        ((symbol? exp) ;check for variables
+         (if (memq exp bound)
+             exp
+             (lookup exp params args)))
+        ((quote-exp? exp) exp)
+        ((lambda-exp? exp) ;checks for nested lambda
+         (list 'lambda
+               (cadr exp)
+               (substitute (caddr exp) params args (append bound (cadr exp)))))
+        (else (map (lambda (subexp) (substitute subexp params args bound))
+                   exp))))
 ```
+

@@ -115,6 +115,7 @@ tags: [Scheme Interpreter/Evaluator]
 <p><i>apply-1</i> takes an expression which should only have values (substituted by <i>eval-1</i> procedure) and no notation. It then calls the relevant procedure on those values. </p>
 
 <ul>
+  <li><i>apply-1</i> takes 2 arguments: a procedure and a list of argument values.</li>
   <li>There are 2 kinds of procedures: primitive and LAMBDA-created. Primitive procedures are called using STK’s eval procedure.</li>
   <li>In Scheme-1, the value of a LAMBDA expression is the expression itself. We substitute the actual arguments(<i>args</i>) for the formal parameters (<i>cadr proc</i>) in the body (<i>caddr proc</i>). The result of this substitution is an expression which we then evaluate with <i>eval-1.</i></li>
 </ul>
@@ -130,4 +131,25 @@ tags: [Scheme Interpreter/Evaluator]
 			     '())))	    ; bound-vars, see below
 	(else (error "bad proc: " proc))))
 ```
+
+<h2>Substituting argument values:</h2>
+
+<p>The <i>substitute</i> procedure takes an expression (body of the procedure), formal parameters, argument values and bound variables as input and returns the procedure body with all argument variables substituted in place of the formal parameters. </p>
+
+<ul>
+  <li><i>Substitute</i> substitutes actual arguments for free references to the corresponding formal parameters. For example, given the expression:</li>
+
+  ```scheme
+  ((lambda (x y)
+	   ((lambda (x) (+ x y))
+	    (* x y)))
+	 5 8)
+  
+ the body of the procedure we're calling is 
+((lambda (x) (+ x y))(* x y))
+and we want to substitute 5 for X and 8 for Y, but the result should be 
+((lambda (x) (+ x 8))(* 5 8)) and not  ((lambda (5) (+ 5 8))(* 5 8))
+```
+
+
 

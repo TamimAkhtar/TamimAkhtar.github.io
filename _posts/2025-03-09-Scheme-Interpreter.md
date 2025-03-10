@@ -84,7 +84,7 @@ tags: [Scheme Interpreter/Evaluator]
 
 <h2>Evaluating an Expression:</h2>
 
-<p><i>EVAL-1</i> takes an expression and returns its value. Scheme expressions have sub-expressions which can have sub-expressions, so it is not surprising to see tree recursion involved in <i>EVAL-1</i> to deal with hierarchies, while recursively evaluating all the subexpressions as well. </p>
+<p><i>eval-1</i> takes an expression and returns its value. Scheme expressions have sub-expressions which can have sub-expressions, so it is not surprising to see tree recursion involved in <i>eval-1</i> to deal with hierarchies, while recursively evaluating all the subexpressions as well. </p>
 
 <ul>
   <li>The read procedure turns the expression “foo to (quote foo). The value of (quote foo) is foo – the second element of the expression.</li>
@@ -108,5 +108,26 @@ tags: [Scheme Interpreter/Evaluator]
 	((pair? exp) (apply-1 (eval-1 (car exp))      ; procedure call
 			         (map eval-1 (cdr exp))))         ; turning actual argument expressions into argument values by tree recursion
 	(else (error "bad expr: " exp))))
+```
+
+<h2>Procedure invocation:</h2>
+
+<p><i>apply-1</i> takes an expression which should only have values (substituted by <i>eval-1</i> procedure) and no notation. It then calls the relevant procedure on those values. </p>
+
+<ul>
+  <li>There are 2 kinds of procedures: primitive and LAMBDA-created. Primitive procedures are called using STK’s eval procedure.</li>
+  <li>In Scheme-1, the value of a LAMBDA expression is the expression itself. We substitute the actual arguments(<i>args</i>) for the formal parameters (<i>cadr proc</i>) in the body (<i>caddr proc</i>). The result of this substitution is an expression which we then evaluate with <i>eval-1.</i></li>
+</ul>
+
+```scheme
+(define (apply-1 proc args)
+  (cond ((procedure? proc)	; use STK's APPLY
+	 (apply proc args))
+	((lambda-exp? proc)
+	 (eval-1 (substitute (caddr proc)   ; the body
+			     (cadr proc)    ; the formal parameters
+			     args           ; the actual arguments
+			     '())))	    ; bound-vars, see below
+	(else (error "bad proc: " proc))))
 ```
 

@@ -6,7 +6,7 @@ categories: [CS61A]
 tags: [Scheme Interpreter/Evaluator]
 ---
 
-<p>Today, we’ll discuss a Scheme Interpreter written in the Scheme language. This version is based on the <strong>UC Berkeley CS61A (2011)</strong> course by Brian Harvey. The interpreter runs in a <strong>REPL environment</strong>, executing code piece by piece.</p>
+<p>Today, we’ll discuss a Scheme Interpreter written in the Scheme language. This version is based on the <strong>UC Berkeley CS61A (2011)</strong> course by Brian Harvey. The interpreter runs in a <strong>REPL environment</strong>, executing code line by line.</p>
 
 <p>To keep things simple, we’ll define some rules:</p>
 
@@ -44,6 +44,7 @@ tags: [Scheme Interpreter/Evaluator]
   <li><code>if</code></li>
   <li><code>quote</code></li>
   <li><code>lambda</code></li>
+  <li><code>and</code></li>
 </ul>
 
 <h3>4. Procedure Calls</h3>
@@ -79,7 +80,7 @@ tags: [Scheme Interpreter/Evaluator]
 (define quote-exp? (exp-checker 'quote))
 (define if-exp? (exp-checker 'if))
 (define lambda-exp? (exp-checker 'lambda))
-(define define-exp? (exp-checker 'define))
+(define and-exp? (exp-checker 'and))
 ```
 
 <h2>Evaluating an Expression:</h2>
@@ -88,6 +89,7 @@ tags: [Scheme Interpreter/Evaluator]
 
 <ul>
   <li>The read procedure turns the expression “foo to (quote foo). The value of (quote foo) is foo – the second element of the expression.</li>
+  <li>The special forms are checked before the <code>pair?</code> test because special forms are also pairs and must be caught before we interpret them as ordinary pair calls </li>
   <li>To evaluate the expression (IF A B C), we first evaluate A; then if A is true, we evaluate B; if A is false, we evaluate C.</li>
   <li>The value of the lambda expression is the expression itself and there is no work to do until we call the actual procedure. </li>
   <li>To evaluate a procedure call, we recursively evaluate all the subexpressions. </li>
@@ -103,11 +105,17 @@ tags: [Scheme Interpreter/Evaluator]
 	     (eval-1 (caddr exp))
 	     (eval-1 (cadddr exp))))
 	((lambda-exp? exp) exp)
-	((define-exp? exp)
-	 (eval (list 'define (cadr exp) (maybe-quote (eval-1 (caddr exp))))))
+  ((and-exp? exp) (eval-and-1 (cdr exp)))
 	((pair? exp) (apply-1 (eval-1 (car exp))      ; procedure call
 			         (map eval-1 (cdr exp))))         ; turning actual argument expressions into argument values by tree recursion
 	(else (error "bad expr: " exp))))
+
+(define (eval-and-1 subexps)
+  (if (null? subexps) #t
+      (let ((result (eval-1(car subexps))))
+        (cond ((null? (cdr subexps)) result)
+              ((equal? result #f) #f)
+              (else (eval-and-1 (cdr subexps)))))))
 ```
 
 <h2>Procedure invocation:</h2>

@@ -12,7 +12,7 @@ tags: [Scheme Interpreter/Evaluator]
 
 <ol>
   <li>We'll call our evaluator <strong>Scheme-1</strong>, and all procedure names will end in <code>-1</code> to avoid confusion with STK (a real Scheme interpreter).</li>
-  <li>Scheme-1 uses the <strong>substitution model</strong> and does not include <code>define</code>. Procedures can only be defined using <code>lambda</code>.</li>
+  <li>Scheme-1 uses the <strong>substitution model</strong> and does not include <code>define</code>. Therefore, procedures can only be defined using <code>lambda</code>.</li>
 </ol>
 
 <h2>Expression Types in Scheme-1</h2>
@@ -24,14 +24,14 @@ tags: [Scheme Interpreter/Evaluator]
 <p>These include numbers, <code>#t</code>, <code>#f</code>, and other constant values.</p>
 
 <ul>
-  <li>STK’s primitive procedures (<code>+</code>, <code>-</code>, <code>/</code>, <code>*</code>, <code>cons</code>, etc.) are treated as self-evaluating constants.</li>
+  <li>STK’s primitive procedures (<code>+</code>  <code>-</code>  <code>/</code>  <code>*</code>  <code>cons</code>  etc.) are treated as self-evaluating constants.</li>
   <li>Since Scheme-1 lacks an environment system with global bindings for functions like STK, we use STK’s evaluator to retrieve values directly instead of treating these as functions.</li>
 </ul>
 
 <h3>2. Symbols (Variables)</h3>
 
 <ul>
-  <li>In the substitution model, local variables are not evaluated directly because we will substitute the actual argument values in the procedure body before evaluating the procedure itself. So by the time we evaluate the procedure itself, all variables hsould have been replaced by argument values. </li>
+  <li>In the substitution model, local variables are not evaluated directly because we will substitute the actual argument values in the procedure body before evaluating the procedure itself. So by the time we evaluate the procedure itself, all variables should have been replaced by argument values. </li>
   <li>Therefore, the only variable names left are primitive Scheme functions, which we evaluate using STK’s built-in <code>eval</code>.</li>
   <li>This allows us to use global primitive functions without maintaining a symbol table or a full environment system.</li>
 </ul>
@@ -41,10 +41,7 @@ tags: [Scheme Interpreter/Evaluator]
 <p>Special forms follow special evaluation rules (not normal applicative-order evaluation). Scheme-1 only supports:</p>
 
 <ul>
-  <li><code>if</code></li>
-  <li><code>quote</code></li>
-  <li><code>lambda</code></li>
-  <li><code>and</code></li>
+  <li><code>if</code> , <code>quote</code> , <code>lambda</code> , <code>and</code>. </li>
 </ul>
 
 <h3>4. Procedure Calls</h3>
@@ -85,12 +82,11 @@ tags: [Scheme Interpreter/Evaluator]
 
 <h2>Evaluating an Expression:</h2>
 
-<p><i>eval-1</i> takes an expression and returns its value. Scheme expressions have sub-expressions which can have sub-expressions, so it is not surprising to see tree recursion involved in <i>eval-1</i> to deal with hierarchies, while recursively evaluating all the subexpressions as well. </p>
+<p><i>eval-1</i> takes an expression and returns its value. Scheme expressions have sub-expressions which can have sub-expressions, it is not surprising to see tree recursion involved in <i>eval-1</i> to deal with hierarchies (subexpressions). </p>
 
 <ul>
-  <li>The read procedure turns the expression “foo to (quote foo). The value of (quote foo) is foo – the second element of the expression.</li>
+  <li>The read procedure turns the expression “foo to <code>(quote foo)</code>. The value of <code>(quote foo)</code> is <code>foo</code> – the second element of the expression.</li>
   <li>The special forms are checked before the <code>pair?</code> test because special forms are also pairs and must be caught before we interpret them as ordinary pair calls </li>
-  <li>To evaluate the expression (IF A B C), we first evaluate A; then if A is true, we evaluate B; if A is false, we evaluate C.</li>
   <li>The value of the lambda expression is the expression itself and there is no work to do until we call the actual procedure. </li>
   <li>To evaluate a procedure call, we recursively evaluate all the subexpressions. </li>
 </ul>

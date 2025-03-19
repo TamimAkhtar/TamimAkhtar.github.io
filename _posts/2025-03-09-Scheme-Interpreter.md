@@ -98,7 +98,7 @@ tags: [Scheme Interpreter/Evaluator]
   <li>The special forms are checked before the <code>pair?</code> test because special forms are also pairs and must be caught before we interpret them as ordinary pair calls </li>
   <li>The value of the lambda expression is the expression itself and there is no work to do until we call the actual procedure. </li>
   <li>To evaluate a procedure call, we recursively evaluate all the subexpressions. </li>
-  <li>LET is really a lambda combined with a procedure call, and one way we can handle LET expressions is just to rearrange the text to get <code> ((lambda (name1 name2 ...) body) value1 value2 ...). </li>
+  <li>LET is really a lambda combined with a procedure call, and one way we can handle LET expressions is just to rearrange the text to get <code> ((lambda (name1 name2 ...) body) value1 value2 ...) </code>. </li>
 </ul>
 
 ```scheme

@@ -199,8 +199,11 @@ tags: [Scheme Interpreter/Evaluator]
 	(else (list 'quote value))))
 ```
 
+<details>
+  <summary>map-1 procedure</summary>
 ```scheme
-(define (map-1 fn seq) ;STK's primitive procedure map applied as map-1
+(define (map-1 fn seq) ;STK's primitive procedure 'map' applied as map-1
   (if (empty? seq) '()
         (cons (apply-1 fn (list(eval-1(car seq))))(map-1 fn (cdr seq)))))
 ```
+</details>

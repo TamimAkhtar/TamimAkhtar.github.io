@@ -41,7 +41,7 @@ tags: [Scheme Interpreter/Evaluator]
 <p>Special forms follow special evaluation rules (not normal applicative-order evaluation). Scheme-1 only supports:</p>
 
 <ul>
-  <li><code>if</code> , <code>quote</code> , <code>lambda</code> , <code>and</code>. </li>
+  <li><code>if</code> , <code>quote</code> , <code>lambda</code> , <code>and</code> , <code>let</code>. </li>
 </ul>
 
 <h3>4. Procedure Calls</h3>
@@ -78,6 +78,15 @@ tags: [Scheme Interpreter/Evaluator]
 (define if-exp? (exp-checker 'if))
 (define lambda-exp? (exp-checker 'lambda))
 (define and-exp? (exp-checker 'and))
+(define let-exp? (exp-checker 'let))
+
+(define (let-names exp)
+  (map car (cadr exp)))
+
+(define (let-values exp)
+  (map cadr (cadr exp)))
+
+(define let-body caddr)
 ```
 
 <h2>Evaluating an Expression:</h2>
@@ -89,6 +98,7 @@ tags: [Scheme Interpreter/Evaluator]
   <li>The special forms are checked before the <code>pair?</code> test because special forms are also pairs and must be caught before we interpret them as ordinary pair calls </li>
   <li>The value of the lambda expression is the expression itself and there is no work to do until we call the actual procedure. </li>
   <li>To evaluate a procedure call, we recursively evaluate all the subexpressions. </li>
+  <li>LET is really a lambda combined with a procedure call, and one way we can handle LET expressions is just to rearrange the text to get <code> ((lambda (name1 name2 ...) body) value1 value2 ...). </li>
 </ul>
 
 ```scheme
@@ -102,6 +112,7 @@ tags: [Scheme Interpreter/Evaluator]
 	     (eval-1 (cadddr exp))))
 	((lambda-exp? exp) exp)
   ((and-exp? exp) (eval-and-1 (cdr exp)))
+  ((let-exp? exp) (eval-let exp))
 	((pair? exp) (apply-1 (eval-1 (car exp))      ; procedure call
 			         (map eval-1 (cdr exp))))         ; turning actual argument expressions into argument values by tree recursion
 	(else (error "bad expr: " exp))))
@@ -112,6 +123,10 @@ tags: [Scheme Interpreter/Evaluator]
         (cond ((null? (cdr subexps)) result)
               ((equal? result #f) #f)
               (else (eval-and-1 (cdr subexps)))))))
+
+(define (eval-let exp)
+  (apply-1 (list 'lambda (let-names exp) (let-body exp))
+	   (map eval-1 (let-values exp))))
 ```
 
 <h2>Procedure invocation:</h2>
@@ -184,3 +199,8 @@ tags: [Scheme Interpreter/Evaluator]
 	(else (list 'quote value))))
 ```
 
+```scheme
+(define (map-1 fn seq) ;STK's primitive procedure map applied as map-1
+  (if (empty? seq) '()
+        (cons (apply-1 fn (list(eval-1(car seq))))(map-1 fn (cdr seq)))))
+```

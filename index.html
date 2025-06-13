@@ -2,3 +2,6 @@
 layout: home
 # Index page
 ---
+
+{% assign filtered_posts = site.posts | reject: "categories", "notes" %}
+{% include post-list.html posts=filtered_posts %}

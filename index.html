@@ -3,30 +3,32 @@ layout: default
 title: Blog
 ---
 
-<h1 class="pt-4 pb-2">Blog</h1>
+<h1 class="pt-4 pb-2" style="font-size: 1.75rem; color: #000;">Blog</h1>
 
-<div class="post-list">
+<div class="post-list" style="max-width: 768px; margin: auto;">
   {% for post in site.posts %}
     {% unless post.categories contains "notes" %}
-      <div class="card post-preview">
-        <div class="card-body">
-          <h1><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h1>
-          {% if post.excerpt %}
-            <p>{{ post.excerpt | strip_html | truncate: 200 }}</p>
-          {% endif %}
-          <div class="post-meta text-muted mt-3 d-flex justify-between">
-            <div>
-              <i class="far fa-calendar fa-fw"></i> {{ post.date | date: "%b %-d, %Y" }}
-              {% if post.categories %}
-                <i class="fas fa-folder fa-fw ms-3"></i> {{ post.categories | join: ", " }}
+      <a href="{{ post.url | relative_url }}" class="text-decoration-none text-reset">
+        <div class="card post-preview mb-4" style="border-radius: 0.75rem; border: 1px solid #e0e0e0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+          <div class="card-body">
+            <h2 class="h4" style="color: #000;">{{ post.title }}</h2>
+            {% if post.excerpt %}
+              <p style="color: #6c757d;">{{ post.excerpt | strip_html | truncate: 200 }}</p>
+            {% endif %}
+            <div class="post-meta text-muted mt-3 d-flex justify-between" style="font-size: 0.9rem;">
+              <div>
+                <i class="far fa-calendar fa-fw"></i> {{ post.date | date: "%b %-d, %Y" }}
+                {% if post.categories %}
+                  <i class="fas fa-folder fa-fw ms-3"></i> {{ post.categories | join: ", " }}
+                {% endif %}
+              </div>
+              {% if post.pin %}
+                <i class="fas fa-thumbtack fa-fw"></i>
               {% endif %}
             </div>
-            {% if post.pin %}
-              <i class="fas fa-thumbtack fa-fw"></i>
-            {% endif %}
           </div>
         </div>
-      </div>
+      </a>
     {% endunless %}
   {% endfor %}
 </div>

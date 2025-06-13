@@ -1,6 +1,5 @@
 ---
-layout: categories
-category: notes
+layout: notes
 icon: fas fa-stream
 order: 5
 ---

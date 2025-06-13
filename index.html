@@ -3,5 +3,12 @@ layout: home
 # Index page
 ---
 
-{% assign filtered_posts = site.posts | reject: "categories", "notes" %}
-{% include post-list.html posts=filtered_posts %}
+<ul>
+  {% assign filtered_posts = site.posts | reject: "categories", "notes" %}
+  {% for post in filtered_posts %}
+    <li>
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      <span class="post-date">({{ post.date | date: "%Y-%m-%d" }})</span>
+    </li>
+  {% endfor %}
+</ul>

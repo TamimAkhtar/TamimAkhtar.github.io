@@ -3,15 +3,30 @@ layout: default
 title: Blog
 ---
 
-<h1>Blog</h1>
+<h1 class="pt-4 pb-2">Blog</h1>
 
-<ul>
+<div class="post-list">
   {% for post in site.posts %}
     {% unless post.categories contains "notes" %}
-      <li>
-        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-        <span class="post-date">({{ post.date | date: "%Y-%m-%d" }})</span>
-      </li>
+      <div class="card post-preview">
+        <div class="card-body">
+          <h1><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h1>
+          {% if post.excerpt %}
+            <p>{{ post.excerpt | strip_html | truncate: 200 }}</p>
+          {% endif %}
+          <div class="post-meta text-muted mt-3 d-flex justify-between">
+            <div>
+              <i class="far fa-calendar fa-fw"></i> {{ post.date | date: "%b %-d, %Y" }}
+              {% if post.categories %}
+                <i class="fas fa-folder fa-fw ms-3"></i> {{ post.categories | join: ", " }}
+              {% endif %}
+            </div>
+            {% if post.pin %}
+              <i class="fas fa-thumbtack fa-fw"></i>
+            {% endif %}
+          </div>
+        </div>
+      </div>
     {% endunless %}
   {% endfor %}
-</ul>
+</div>

@@ -2,7 +2,7 @@
 title: "Writing a Scheme Interpreter in Scheme"
 description: "Simple evaluator for Scheme using substitution model"
 date: 2025-03-09
-categories: [CS61A]
+categories: [Blog]
 tags: [Scheme Interpreter/Evaluator]
 ---
 

@@ -4,11 +4,12 @@ layout: home
 ---
 
 <ul>
-  {% assign filtered_posts = site.posts | where_exp: "post", "post.categories contains 'notes' | not" %}
-  {% for post in filtered_posts %}
-    <li>
-      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-      <span class="post-date">({{ post.date | date: '%Y-%m-%d' }})</span>
-    </li>
+  {% for post in site.posts %}
+    {% unless post.categories contains "notes" %}
+      <li>
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        <span class="post-date">({{ post.date | date: "%Y-%m-%d" }})</span>
+      </li>
+    {% endunless %}
   {% endfor %}
 </ul>

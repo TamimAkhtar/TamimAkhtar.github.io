@@ -6,13 +6,12 @@ This site is based on the Chirpy Jekyll theme and can be found at [Cotes Chung r
 2. Added a new file notes.md (and projects.md) in the _tabs/ folder with the following front matter:
 
 '''
----
+--- 
 title: Notes
 icon: fas fa-stream
 order: 5
 layout: category
 category: notes
----
 
 '''
 

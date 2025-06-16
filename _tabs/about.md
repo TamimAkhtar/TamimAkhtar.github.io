@@ -4,8 +4,6 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-## 👋 About Me
-
 Hey! I'm **Tamim** — a Systems Engineer with a degree in **Mechanical Engineering**. These days, a big part of my job involves writing software for **Servo Test Applications**, mostly using **LabVIEW** and sometimes **MATLAB**.
 
 I've recently been diving deeper into programming — spending some time learning the fundamentals, building small projects, and just getting better at it.

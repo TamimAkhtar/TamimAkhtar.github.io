@@ -13,7 +13,8 @@ title: Blog
           <div class="card-body">
             <h2 class="h4" style="color: #000;">{{ post.title }}</h2>
             {% if post.excerpt %}
-              <p style="color: #6c757d;">{{ post.excerpt | strip_html | truncate: 200 }}</p>
+              <p style="color: #6c757d; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
+              {{ post.excerpt | strip_html }}</p>
             {% endif %}
             <div class="post-meta text-muted mt-3 d-flex justify-between" style="font-size: 0.9rem;">
               <div>

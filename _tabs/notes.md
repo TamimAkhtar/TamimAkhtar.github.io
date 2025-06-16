@@ -1,6 +1,6 @@
 ---
 title: Notes
-icon: fas fa-stream
+icon: fas fa-pen
 order: 5
 layout: page
 ---

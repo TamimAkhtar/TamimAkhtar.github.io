@@ -29,12 +29,17 @@ I can do this by using the Y combinator as follows:
 
 So here, we have 3 lambda functions. Understand that the first lambda takes a function f as an argument which is the innermost
 lambda function. lets call that function z. Note that the outer lambda itself returns a lambda function.
+
 So I have basically (lambda (n)(z z n)).
+
 lets call this with an argument 3
+
 so I have (z z 3). 
+
 This means that I am calling a function named 'a' with 2 arguments, a and 3. This is how I am able to call the function itself.
+
 so when I call (a a 3), it will evaluate to (if (= 3 0) 1 (* 3 (a a (- 3 1))))
+
 This will keep going until n is 0, at which point it will return 1.
 
-The job of the Y combinator is to provide the function with itself as an
-argument.
+The job of the Y combinator is to provide the function with itself as an argument.

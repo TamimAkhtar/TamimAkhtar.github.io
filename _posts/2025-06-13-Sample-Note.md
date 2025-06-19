@@ -142,8 +142,11 @@ Only the branch needed is evaluated:
 <li>The purpose of these evaluation methods is to help us think about procedure application, not to provide a description of how the interpreter really works.</li>
 <li>If we are doing purely functional programming, using either evaluation method returs the same result. Especially, Applicative order only works for non-mutable data when states remain unchanged.</li>
 <li>Most functional programming languages use lazy evaluation in which we delay function evaluation such that it avoids multiple evaluation of the same function; This is a combination of both Applicative and Normal order evaluation.</li>
+</ul>
+
+---
 
 References
 1. https://sookocheff.com/post/fp/evaluating-lambda-expressions/
 2. Structure and Interpretations of Computer Programs - The Wizard book
----
+

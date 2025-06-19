@@ -3,7 +3,7 @@ title: "Normal vs Applicative order of evaluation"
 description: "from CS61A"
 date: 2025-06-13
 categories: [notes]
-tags: [Normal order , applicative order, evaluation]
+tags: [Normal order , applicative order, CS61A]
 ---
 
 When a function is applied to arguments, two evaluation strategies can be used:

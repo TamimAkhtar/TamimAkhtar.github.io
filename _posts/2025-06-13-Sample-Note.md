@@ -136,7 +136,7 @@ Only the branch needed is evaluated:
 → Use only (5 + 5)
 → Result: 10 ✅
 ```
-## 👇 Some Takeaways
+## 🧠 Some Takeaways
 <ul>
 
 <li>The purpose of these evaluation methods is to help us think about procedure application, not to provide a description of how the interpreter really works.</li>

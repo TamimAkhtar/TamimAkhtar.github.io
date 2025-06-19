@@ -27,7 +27,7 @@ I can do this by using the Y combinator as follows:
         (* x (fun fun (- x 1))))))
 ```
 
-So here, we have 3 lambda funstions. Understand that the first lambda takes a function f as an argument which is the innermost
+So here, we have 3 lambda functions. Understand that the first lambda takes a function f as an argument which is the innermost
 lambda function. lets call that function z. Note that the outer lambda itself returns a lambda function.
 So I have basically (lambda (n)(z z n)).
 lets call this with an argument 3

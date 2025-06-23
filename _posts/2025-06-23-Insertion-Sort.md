@@ -6,6 +6,10 @@ categories: [notes]
 tags: [Insertion Sort, CS61A]
 ---
 
+This is an amazing algorithm, it really impresses me how powerful recursion is in general and doing this with functional programming makes this even more beautiful.
+
+## The Code
+
 ```scheme
 (define (sort sent)
     (if (empty? sent) '()
@@ -17,8 +21,6 @@ tags: [Insertion Sort, CS61A]
           (else (se (first sent)(insert num (bf sent))))))
 ```
 
-This is an amazing algorithm, it really impresses me how powerful recursion is in general and doing this with functional programming makes this even more beautiful.
-
 The basic idea is as follows:
 
 I have a sentence of numbers, I start with comparing the second number with the one before it, if they are in ascending order, good, I move ahead to the third number.
@@ -26,9 +28,9 @@ Now if the third number is smaller than the second one, I compare it with the se
 
 The logic is as follows:
 
-The sort function recursively breaks the sentence down to its last element.
+- The sort function recursively breaks the sentence down to its last element.
 
-Then, each number is inserted into the correct position of the sentence that's already being built up in sorted order.
+- Then, each number is inserted into the correct position of the sentence that's already being built up in sorted order.
 
 Take this sentence for example:
 
@@ -48,11 +50,9 @@ I want to compare every number. So I start with my sort method, it makes me go t
 
 Now, the insert method handles the actual comparison:
 
-If the sentence is empty, return a new one with just the number.
-
-If the number is smaller than the first element, it goes right there—at the front.
-
-Otherwise, we keep the current first element and try inserting the number into the rest of the list.
+- If the sentence is empty, return a new one with just the number.
+- If the number is smaller than the first element, it goes right there—at the front.
+- Otherwise, we keep the current first element and try inserting the number into the rest of the list.
 
 This guarantees that every number is inserted into an already sorted sentence.
 
@@ -64,6 +64,7 @@ So lets evaluate the part (insert 5 '15) > evaluates to '(5 15)
 
 Notice that senetence will always be sorted via this method before it is passed to insert.
 
+```scheme
 (insert 15 '()) → '(15)
 (insert 5 '(15)) → '(5 15)
 (insert 8 '(5 15)) → compare 8 with 5 → keep 5 → insert 8 into '(15)
@@ -73,4 +74,4 @@ Notice that senetence will always be sorted via this method before it is passed 
                       → compare 10 with 15 → insert before 15 → result: '(5 8 10 15)
 (insert 11 '(5 8 10 15)) → compare 11 with 5, 8, 10 → keep all
                          → compare 11 with 15 → insert before 15 → result: **'(5 8 10 11 15)**
-
+```

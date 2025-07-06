@@ -20,12 +20,19 @@ The immediate issue for today is the difference between a linear recursive proce
 This function counts the number of words in a sentence. It takes Θ(N) time. It also requires Θ(N) space, not counting the space for the sentence itself, because Scheme has to keep track of N pending computations during the processing:
 
 (count '(she loves you))
+
 = (+ 1 (count '(loves you)))
+
 = (+ 1 (+ 1 (count '(you))))
+
 = (+ 1 (+ 1 (+ 1 (count '()))))
+
 = (+ 1 (+ 1 (+ 1 0)))
+
 = (+ 1 (+ 1 1))
+
 = (+ 1 2)
+
 = 3
 
 So in recursion, we have to wait for the next one in line to return a value and all that information takes up space in computer memory and is stored waiting for the next in line to return something for it to return a value itself.
@@ -46,9 +53,13 @@ When we get halfway through this chart and compute (count ’()), we aren’t fi
 This time, we don’t have to remember uncompleted tasks; when we reach the base case of the recursion, we have the answer to the entire problem:
 
 (iter '(she loves you) 0)
+
 → (iter '(loves you) 1)
+
 → (iter '(you) 2)
+
 → (iter '() 3)
+
 → 3
 
 When a process has this structure, Scheme does not need extra memory to remember all the unfinished tasks during the computation.
@@ -60,7 +71,7 @@ All the work is done prior to the recursive call and there's no need to wait for
 
 Recursive: We have a chain of deferred operations, interpreter should keep track of the operations it has to perform later on.
 
-Iteration: We only need to keep track of current variables at any given time.
+Iterative: We only need to keep track of current variables at any given time.
 
 Note that both these procedures are recursive, as in the syntax used for writing both of them is recursive. The process of how they evolve is different.
 

@@ -8,8 +8,6 @@ tags: [Exceptions, Errors, Java]
 
 # ⚖️ Java Exceptions and Errors
 
-![Java Exceptions Hierarchy](626803be-6e39-408e-937e-03e267046fe6.png)
-
 As Java is an **object-oriented language**, all exceptions are considered objects of special classes. The class hierarchy of Java Exceptions and Errors can be seen above, where the base class is `java.lang.Throwable`, which has two direct subclasses: **Error** and **Exception**.
 
 ---

@@ -6,95 +6,218 @@ categories: [notes]
 tags: [Exceptions, Errors, Java]
 ---
 
-As Java is an object oriented langauge, all exceptions are considered objects of special classes. The class hierarchy of Java Exceptions and Errors can be seen below where the base class is Java.lang.Throwable which has 2 direct subclasses, Error and Exception.
+# ⚖️ Java Exceptions and Errors
 
-Error class represents: Low level exceptions in JVM like OutofMemoryError, StackOverflowError
+![Java Exceptions Hierarchy](626803be-6e39-408e-937e-03e267046fe6.png)
 
-Exception Class:
-Runtime / Unchecked Exceptions: Checked for during program execution, doesnt prevent a code from compiling.
-Checked Exceptions: Checked for by the compiler during compiling. The compiler checks wether the programmer expects the occurence of such exceptions in a program. If a programmer expects such exceptions, they have to indicate it otherwise the compiler cannot compile the program:
+As Java is an **object-oriented language**, all exceptions are considered objects of special classes. The class hierarchy of Java Exceptions and Errors can be seen above, where the base class is `java.lang.Throwable`, which has two direct subclasses: **Error** and **Exception**.
 
-Public static String readLineFromFile() throws FileNOtFoundEXception() {
-    Scanner scanner= new Scanner(newFile("file.txt"))
+---
+
+## 💥 Error Class
+Represents low-level exceptions in the JVM, such as:
+- `OutOfMemoryError`
+- `StackOverflowError`
+
+---
+
+## ⚠️ Exception Class
+
+### 🚀 Runtime / Unchecked Exceptions
+- Checked **during program execution**.
+- Do not prevent code from compiling.
+
+### 📋 Checked Exceptions
+- Checked **by the compiler** at compile time.
+- The compiler checks whether the programmer expects such exceptions in a program.  
+- If a programmer expects such exceptions, they must indicate it; otherwise, the compiler cannot compile the program.
+
+**Example:**
+```java
+public static String readLineFromFile() throws FileNotFoundException {
+    Scanner scanner = new Scanner(new File("file.txt"));
 }
+```
+Here, the programmer indicates that the `Scanner` constructor might throw a `FileNotFoundException`.  
+As a result, the **method caller** will need to either:
+- Handle the exception internally, or  
+- Throw it further to its caller method.
 
-Here the programmer indicates that the Scanner constructor might throw a FileNotFoundException in method decleration. As a result, the method caller will need to decide whether to either handle the exception internally or throw it further to its caller method.
+---
 
-General Exception Handling:
-An exception interrupts the normal execution of a program. After a line of code throws an exception, the Java runtime system attempts to find a suitable handler for it. Such a handler can be located in the same method where the exception occurred or in the calling method. As soon as a suitable handler is found and executed, the exception is considered as handled, and the program runs normally.
+## 🛠 General Exception Handling
+An exception **interrupts** the normal execution of a program. After a line of code throws an exception, the Java runtime system attempts to find a **suitable handler**.
 
-Suitable Handler 1: try - catch block -> if an exception occurs in try block, execute the code in catch block. Supports several catch blocks to handle multiple exceptions
+Such a handler can be:
+- Located **in the same method** where the exception occurred, or  
+- In the **calling method**.
 
-Suitable Handler 2: try - catch - finally block (all statements present in finally block will always execute regardless of wether an exception occurs in try block )
+Once a handler is found and executed, the exception is **handled**, and the program continues normally.
 
-Warning Handler: throw exception in method handler -> like declaring a warning that this method might throw an exception
+---
 
-Array Exceptions
-NullPointerException: since Array is a reference type, its variable can be null and checking a null array might throw an exception: Avoid this by using: 
+### ✅ Suitable Handler 1: `try` - `catch` Block
+- If an exception occurs in the `try` block, execute the code in the `catch` block.
+- Supports **several catch blocks** to handle multiple exceptions.
 
+### 🔄 Suitable Handler 2: `try` - `catch` - `finally` Block
+- The statements in the `finally` block always execute, regardless of whether an exception occurs in the `try` block.
+
+---
+
+### ⚠️ Warning Handler: Declaring Exceptions in Method Signatures
+Declaring that a method **may throw** an exception:
+
+```java
+public static String readLineFromFile() throws FileNotFoundException {
+    Scanner scanner = new Scanner(new File("file.txt"));
+}
+```
+
+---
+
+## 📦 Array Exceptions
+
+### ❌ NullPointerException
+Since arrays are reference types, their variable can be `null`.  
+Example:
+```java
 int[] numbers = null;
-int size = numbers.length; // It throws an NPE
+int size = numbers.length; // Throws NPE
+```
+**Fix:**
+```java
 int size = numbers == null ? 0 : numbers.length;
+```
 
-Array Index out of Bounds Exception:This is a fairly common exception that occurs while attempting to access a non-existent element of the array. Check this by using:
-
- if (index < 0 || index > hardCodedArray.length - 1) {
-            System.out.println("The index is out of bounds.");
-        } else {
-            System.out.println(hardCodedArray[index]);
-        }
-    }
+### 🚫 ArrayIndexOutOfBoundsException
+Occurs when trying to access a **non-existent element** of the array.  
+**Check before accessing:**
+```java
+if (index < 0 || index > hardCodedArray.length - 1) {
+    System.out.println("The index is out of bounds.");
+} else {
+    System.out.println(hardCodedArray[index]);
 }
+```
 
-Be Proactive and Throw Exceptions yourself
+---
 
-Any object of the Throwable class and all its subclasses can be thrown using the throw statement. 
-The common practice is to throw an exception when and only when the method preconditions are broken, that is when it cannot be performed under the current conditions.
-If a client can reasonably be expected to recover from an exception, make it a checked exception. If a client cannot do anything to recover, make it an unchecked exception.
+## 🎯 Throwing Exceptions Yourself
+Any object of the `Throwable` class or its subclasses can be thrown using the `throw` statement.
 
+**Best practices:**
+- If a client can reasonably recover → **make it a checked exception**.
+- If a client cannot recover → **make it an unchecked exception**.
 
-For example, let's take a look at the following method that reads text from a file. In case the file is not found, the method throws an IOException:
+**Examples:**
 
+☑ Checked Exception:
+```java
 public static String readTextFromFile(String path) throws IOException {
-    // find a file by the specified path    
-
     if (!found) {
-        throw new IOException("The file " + path + " is not found"); //throwing a checked exception
+        throw new IOException("The file " + path + " is not found");
     }
-    ..........................
 }
+```
 
- public void deposit(long amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Incorrect sum " + amount); //throws unchecked Exceptions
-        }
-        
-        if (amount >= 100_000_000L) {
-            throw new IllegalArgumentException("Too large amount"); //throws unchecked Exception
-        }
-        
-        balance += amount;
+🚫 Unchecked Exception:
+```java
+public void deposit(long amount) {
+    if (amount <= 0) {
+        throw new IllegalArgumentException("Incorrect sum " + amount);
     }
+    if (amount >= 100_000_000L) {
+        throw new IllegalArgumentException("Too large amount");
+    }
+    balance += amount;
+}
+```
 
-Assertions:
+---
 
+## 📜 Handling Input Stream Exceptions
+Java Input Streams should be **closed after use** to release system resources.
+
+**Naive example:**
+```java
+Reader reader = null;
+
+try {
+    reader = new FileReader("file.txt");
+    // code which may throw an exception
+} finally {
+    reader.close();
+}
+```
+The `close()` method is in `finally` so exceptions don’t prevent it from running.  
+**But**: If `close()` itself throws an exception, it will hide the original exception from the `try` block.
+
+---
+
+### 🛡 Improved Handling
+```java
+void readFile() throws IOException {
+    Reader reader = null;
+    try {
+        reader = new FileReader("file.txt");
+        throw new RuntimeException("Exception1");
+    } finally {
+        try {
+            reader.close(); // throws Exception2
+        } catch (Exception e) {
+            // handle Exception2
+        }
+    }
+}
+```
+
+---
+
+## ♻️ try-with-resources
+Automatically closes resources that implement `AutoCloseable`:
+
+```java
+try (Reader reader1 = new FileReader("file1.txt");
+     Reader reader2 = new FileReader("file2.txt")) {
+    // some code
+}
+```
+
+If both the `try` block and the `close()` method throw exceptions:
+```java
+void readFile() throws IOException {
+    try (Reader reader = new FileReader("file.txt")) {
+        throw new RuntimeException("Exception1");
+    }
+}
+```
+Output:
+```
+Exception in thread "main" java.lang.RuntimeException: Exception1
+    at ...
+    Suppressed: java.lang.RuntimeException: Exception2
+        at ...
+```
+
+---
+
+## 🐾 Assertions
+```java
 public Cat(String name, int age) {
     assert (age >= 0) : "Invalid age";
     this.name = name;
     this.age = age;
 }
+```
+Run with:
+```bash
+java -ea BrokenInvariants
+```
 
-The part before the colon specifies the boolean expression that should be checked, and when it evaluates to false, an error is thrown. The part after it specifies the message that describes the error.
-Now, if we run the code with the -ea flag (java -ea BrokenInvariants), the program will throw an error and terminate right in the Cat constructor:
+**Behavior:**
+- ✅ Condition true → nothing happens.
+- ❌ Condition false & assertions enabled → throws `AssertionError`.
+- 🚫 Assertions disabled (default) → ignored entirely.
 
-Behavior:
-
-If the condition is true, nothing happens.
-
-If the condition is false and assertions are enabled (java -ea), it throws an AssertionError and usually stops the program unless caught.
-
-If assertions are disabled (default), the assert line is ignored completely (as if it doesn’t exist).
-
-Try with Resources
-We know that Java Input Streams should be closed after they are used to release resources.
-
+---

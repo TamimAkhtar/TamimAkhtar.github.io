@@ -1,7 +1,7 @@
 ---
 title: Notes
 icon: fas fa-pen
-order: 5
+order: 30
 layout: page
 ---
 

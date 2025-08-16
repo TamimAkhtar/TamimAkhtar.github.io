@@ -7,7 +7,7 @@ title: Blog
 
 <div class="post-list" style="max-width: 768px; margin: auto;">
   {% for post in site.posts %}
-    {% unless post.categories contains "notes" %}
+    {% unless post.categories contains "notes" or post.categories contains "projects" %}
       <a href="{{ post.url | relative_url }}" class="text-decoration-none text-reset">
         <div class="card post-preview mb-4" style="border-radius: 0.75rem; border: 1px solid #e0e0e0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
           <div class="card-body">

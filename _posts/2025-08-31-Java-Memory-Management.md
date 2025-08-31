@@ -92,7 +92,7 @@ When first request arrives, server.accept() creates a socket object in the heap 
 **Thread 1 Stack Frame (called by worker) stores:**
 - client reference to Socket object 1
 
-### First Request
+### Second Request
 
 When a second request arrives, server.accept() creates a new socket object in heap (lets call it Socket object 2)
 

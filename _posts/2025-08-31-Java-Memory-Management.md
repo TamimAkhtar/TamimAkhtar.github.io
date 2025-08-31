@@ -77,31 +77,37 @@ public static void main(String[] args) {
 
 In the above method, we are using Java executor which encapsulates 5 threads in a single pool and puts incoming requests in an internal queue and executes each request in a different thread. So everytime we receive a request, we call a worker method that runs in its own thread.
 
+## Memory Flow When Requests Arrive
+
+### First Request
+
 When first request arrives, server.accept() creates a socket object in the heap (lets call it Socket Object 1)
 
-Main Thread's Stack Frame stores:
-1. client reference to Socket object 1
+**Main Thread's Stack Frame stores:**
+- client reference to Socket object 1
 
-Heap Memory stores:
-1. Socket object 1
+**Heap Memory stores:**
+- Socket object 1
 
-Thread 1 Stack Frame (called by worker) stores:
-1. client reference to Socket object 1
+**Thread 1 Stack Frame (called by worker) stores:**
+- client reference to Socket object 1
+
+### First Request
 
 When a second request arrives, server.accept() creates a new socket object in heap (lets call it Socket object 2)
 
-Main Thread's Stack Frame:
-1. client reference to Socket object 2 (reassigned to new object)
+**Main Thread's Stack Frame stores:**
+- client reference to Socket object 2 (reassigned to new object)
 
-Heap Memory stores:
-1. Socket object 1 (stays as long as there's a reference to it example in the thread 1 of executor, once no thread references it anymore, it becomes eligible for garbage collection)
-2. Socket object 2
+**Heap Memory stores:**
+- Socket object 1 (stays as long as there's a reference to it example in the thread 1 of executor, once no thread references it anymore, it becomes eligible for garbage collection)
+- Socket object 2
 
-Thread 1 Stack Frame (called by worker) stores:
-1. client reference to Socket object 1
+**Thread 1 Stack Frame (called by worker) stores:**
+- client reference to Socket object 1
 
-Thread 2 Stack Frame (called by worker) stores:
-1. client reference to Socket object 2
+**Thread 2 Stack Frame (called by worker) stores:**
+- client reference to Socket object 2
 
 So when a thread is called to executes its task, it gets its own stack frame with a parameter that points to the socket object in heap. So each thread has a private copy of the Socket reference in its own stack. Thats why threads can work independently with different socket objects. Each Thread's stack frame will also have their own local variables which may be declared in worker method.
 

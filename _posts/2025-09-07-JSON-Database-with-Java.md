@@ -16,21 +16,6 @@ I have developed a Java-based client-server application that enables users to st
 
 ---
 
-## Client-Server Interaction Diagram
-
-```mermaid
-sequenceDiagram
-    participant Client as Web Browser (Client)
-    participant Server as JSON Server
-
-    Client->>Server: Connect via Socket
-    Client->>Server: Send JSON Request (set/get/delete)
-    Server->>Server: Parse Request, Validate
-    Server->>Server: Access/Modify JSON Database
-    Server->>Client: Send JSON Response (OK/ERROR)
-    Client->>Client: Display Response
-```
-
 ## Web-Browser (Client)
 
 ### Features

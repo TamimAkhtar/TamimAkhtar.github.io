@@ -16,7 +16,7 @@ I have developed a Java-based client-server application that enables users to st
 
 ## Client-Server Interaction Diagram
 
-![Client-Server Diagram](assets/images/Json_Database_SequenceDiagram.png)
+<img src="assets/images/Json_Database_SequenceDiagram.png" alt="Description" width="720"/>
 
 ---
 
@@ -82,8 +82,8 @@ I have developed a Java-based client-server application that enables users to st
 - **Scalability**:
   - Adding new request types currently requires modifying the `switch` in `handleClient`; the Command pattern could improve extensibility.
   - Database abstraction is limited to a local JSON file; it could be extended to support other storage backends (e.g., SQLite).
-
-  ## Example Requests and Responses
+  
+  ### Example Requests and Responses
 
 ### 1. Command-line `set` request
 ```bash

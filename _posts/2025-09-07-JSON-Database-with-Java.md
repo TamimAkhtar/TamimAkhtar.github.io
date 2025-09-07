@@ -16,18 +16,7 @@ I have developed a Java-based client-server application that enables users to st
 
 ## Client-Server Interaction Diagram
 
-```mermaid
-sequenceDiagram
-    participant Client as Web Browser (Client)
-    participant Server as JSON Server
-
-    Client->>Server: Connect via Socket
-    Client->>Server: Send JSON Request (set/get/delete)
-    Server->>Server: Parse Request, Validate
-    Server->>Server: Access/Modify JSON Database
-    Server->>Client: Send JSON Response (OK/ERROR)
-    Client->>Client: Display Response
-```
+![Client-Server Diagram](assets/images/Json_Database_SequenceDiagram.png)
 
 ---
 
@@ -93,5 +82,87 @@ sequenceDiagram
 - **Scalability**:
   - Adding new request types currently requires modifying the `switch` in `handleClient`; the Command pattern could improve extensibility.
   - Database abstraction is limited to a local JSON file; it could be extended to support other storage backends (e.g., SQLite).
+
+  ## Example Requests and Responses
+
+### 1. Command-line `set` request
+```bash
+> java Main -t set -k text -v "Hello World!"
+```
+```
+Client started!
+Sent: {"type":"set","key":"text","value":"Hello World!"}
+Received: {"response":"OK"}
+```
+
+### 2. File-based `set` request
+```bash
+> java Main -in setFile.json
+```
+```
+Client started!
+Sent:
+{
+   "type":"set",
+   "key":"person",
+   "value":{
+      "name":"Elon Musk",
+      "car":{
+         "model":"Tesla Roadster",
+         "year":"2018"
+      },
+      "rocket":{
+         "name":"Falcon 9",
+         "launches":"87"
+      }
+   }
+}
+Received: {"response":"OK"}
+```
+
+### 3. File-based `get` request (nested key)
+```bash
+> java Main -in getFile.json
+```
+```
+Client started!
+Sent: {"type":"get","key":["person","name"]}
+Received: {"response":"OK","value":"Elon Musk"}
+```
+
+### 4. File-based `set` request to update nested value
+```bash
+> java Main -in updateFile.json
+```
+```
+Client started!
+Sent: {"type":"set","key":["person","rocket","launches"],"value":"88"}
+Received: {"response":"OK"}
+```
+
+### 5. File-based `get` request for nested object
+```bash
+> java Main -in secondGetFile.json
+```
+```
+Client started!
+Sent: {"type":"get","key":["person"]}
+Received:
+{
+   "response":"OK",
+   "value":{
+      "name":"Elon Musk",
+      "car":{
+         "model":"Tesla Roadster",
+         "year":"2018"
+      },
+      "rocket":{
+         "name":"Falcon 9",
+         "launches":"88"
+      }
+   }
+}
+```
+
 
 ---

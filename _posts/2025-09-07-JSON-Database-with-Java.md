@@ -6,13 +6,28 @@ categories: [projects]
 tags: [Java, client, server , JSON]
 ---
 
-**Project Link:** [https://github.com/TamimAkhtar/Java-and-Spring-Course-HyperSkill.git]
+**Project Link:** [GitHub Repository](https://github.com/TamimAkhtar/Java-and-Spring-Course-HyperSkill.git)
 
 ---
 
 ## Project Overview
 
 I have developed a Java-based client-server application that enables users to store data on the server in JSON format. The server exchanges data with a web browser (client) and handles multiple requests.
+
+## Client-Server Interaction Diagram
+
+```mermaid
+sequenceDiagram
+    participant Client as Web Browser (Client)
+    participant Server as JSON Server
+
+    Client->>Server: Connect via Socket
+    Client->>Server: Send JSON Request (set/get/delete)
+    Server->>Server: Parse Request, Validate
+    Server->>Server: Access/Modify JSON Database
+    Server->>Client: Send JSON Response (OK/ERROR)
+    Client->>Client: Display Response
+```
 
 ---
 
@@ -33,7 +48,7 @@ I have developed a Java-based client-server application that enables users to st
 - **File Handling**: Prepares JSON from file.
 - **Enums**: Used for type safety.
 
-### Improvements
+### Improvements I can make
 - **Code Logic and Structure**: 
   - Decouple request preparation and split responsibilities of `Main()`.
   - Simplify validation logic in `JsonStrategyFactory.selectStrategy()` as it mixes validation with strategy selection.
@@ -63,7 +78,7 @@ I have developed a Java-based client-server application that enables users to st
 - **Encapsulation**: Requests and responses are encapsulated in objects. Supports nested keys using `JsonArray` to traverse a JSON object.
 - **Robustness**: Handles broken requests from clients with appropriate messages.
 
-### Improvements
+### Improvements I can make
 - **Code Logic and Structure**:
   - `getFromFile`, `setToFile`, and `deleteFromFile` are complex in handling nested JSONs and could be simplified.
   - `ServerSocket` shutdown works but threads may still be active; consider using `executor.shutdown()`.

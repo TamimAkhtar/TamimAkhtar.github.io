@@ -6,7 +6,7 @@ categories: [projects]
 tags: [Java, client, server , JSON]
 ---
 
-**Project Link:** [GitHub Repository](YOUR_GITHUB_LINK_HERE)
+**Project Link:** [https://github.com/TamimAkhtar/Java-and-Spring-Course-HyperSkill.git]
 
 ---
 
